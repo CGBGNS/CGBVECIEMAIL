@@ -66,132 +66,51 @@
       border-radius: 5px;
     }
     
-    
-    
       </style>
     </head>
     <body>
     <center>
-    <h1>Visualizador de KPIs por cola</h1>
-    <button onclick="loadData()">Refrescar Datos</button>
+    <h1>Emails Pendientes</h1>
+    <button onclick="CrearEmail()">Crear email</button>
     <br>
     <table class="redTable">
     <tbody id="tabla-container"></tbody>
     </table>
     <!--button onclick="refreshData()">Refrescar Datos</button-->
     
-    <button onclick="loadData()">Refrescar Datos</button>
+    <button onclick="CrearEmail()">Crear email</button>
     <script>
       //v1
-      const CLIENT_ID = '50999a4b-409c-4846-a249-4357e0e293a5'; 
+      const CLIENT_ID = '3da67cdc-4c46-424a-adae-6807465fc4a4'; 
       const ENVIRONMENT = 'mypurecloud.de';
-      const API_ENDPOINT = 'https://api.mypurecloud.de/api/v2/analytics/queues/observations/query';
-      const API_ENDPOINT2 = 'https://api.mypurecloud.de/api/v2/analytics/conversations/activity/query';
-      const REDIRECT_URI = 'http://localhost:3000/statqueues';
+      const API_ENDPOINT = 'https://api.mypurecloud.de//api/v2/conversations/emails';
+      const REDIRECT_URI = 'https://cgbgns.github.io/CGBVECIEMAIL/';
       
       var gToken = getParameterByName('access_token');
-      const queues = {
-        "a9aa307e-9683-4403-b7b5-db3cf1156cca": { name: "SI24_AUT-ASISTENCIAVIAJE_ESSD0201" },	  
-        "e1660c4a-62f4-4012-9254-7915eb2f9dd6": { name: "SI24_AUT-COMERCIAL_ESSD0101" },	  
-        "bbbdc008-a799-47c6-a64b-223c63a7d5eb": { name: "SI24_AUT-CSA_ESSD0205" },	 	
-        "b52d2a35-b6fb-4662-a473-3f58c065bfd5": { name: "SI24_AUT-EXPASISTENCIA_ESSD0201" },
-        "72937585-4272-420d-b7fc-dd271853615a": { name: "SI24_AUT-GESTCARTERA_ESSD0301" },	  		
-          "02898175-6c56-4032-afd3-60e3351d19ee": { name: "SI24_AUT-PRESTACIONES_ESSD0205" },	  
-          "857e77a5-0946-4d53-8c6d-8c017afaca87": { name: "SI24_AUT-RETENCION_ESSD0105" },	  
-        "278da8df-8be5-49ed-9479-5d8311203288": { name: "SI24_CENTROS-MEDICOS_ESSD9999" },	  
-          "e38d5695-ef2c-4443-9d74-19be08b36e1a": { name: "SI24_CLUB-MAPFRE_ESSD0301" },	  	
-        "e0545b81-bff7-4dfc-8fee-9012f9d15713": { name: "SI24_MAPFRE-ACI_ESSD0301" },	  
-        "b023b85d-fb96-4b8b-a430-98c1e68907ce": { name: "SI24_MULTIMAP_ESSD9999" },	  
-        "b8a3c8a7-a5d2-4513-8d5e-69b967637e63": { name: "SI24_PAT-COMERCIAL_ESSD0102" },	  
-          "5fd9379a-edff-4c1b-bf95-e2bc4252fb9e": { name: "SI24_PAT-GESTCARTERA_ESSD0301" },	  
-          "72889920-75ef-41d9-bc09-6fa8d402963f": { name: "SI24_PAT-PRESTACIONES_ESSD0206" },	  
-          "ef1c84ff-63da-41d4-9b77-c892e05f9457": { name: "SI24_PAT-RETENCION_ESSD0105" },	  
-          "6ccfa428-c818-4d6b-b415-e89c36c76515": { name: "SI24_PER-EXPPRESTACIONES_ESSD0203" },	  
-          "13bdd5c4-e7f0-4a69-bd63-c4025e7455b8": { name: "SI24_SAL-COMERCIAL_ESSD0103" },	  
-          "55cf09a5-999e-4343-ac4a-f02edaa8ae50": { name: "SI24_SAL-GESTCARTERA_ESSD0301" },	  
-          "816bab0a-860b-4465-89b0-c12cc57a1a1f": { name: "SI24_SAL-PRESTACIONES_ESSD0203" },	  
-          "3bc9cb93-91b8-4811-925a-abcf39e13211": { name: "SI24_SAL-RETENCION_ESSD0105" },	  
-          "e163a627-66b9-49f5-ba4a-a10c72856187": { name: "SI24_VER-GESTCARTERAAUT_ESSD0301" },	  
-          "b555978b-1564-4f33-bdd0-334d33d408e2": { name: "SI24_VER-GESTCARTERAPAT_ESSD0301" },	  
-          "63abb269-7b1a-4a35-ad5b-cea2afd3f356": { name: "SI24_VER-PRESTACIONESAUT_ESSD0205" },	  
-          "8de7b197-6915-47b0-98ef-4ec77ebcbd49": { name: "SI24_VER-PRESTACIONESPAT_ESSD0206" },	  
-          "b42c60c7-6fb8-4c64-887b-999b365c26fe": { name: "SI24_VIA-COMERCIAL_ESSD0104" },	  
-          "fab0af03-760e-40d8-b5a2-4f16caa62b5f": { name: "SI24_VID-COMERCIAL_ESSD0103" },	  
-          "c761fc2f-4d7e-4d70-a62b-486efe18f65a": { name: "SI24_VID-RETENCION_ESSD0105" },	  
-        "3627522f-759c-4607-9364-80c31faf60ee": { name: "SI24_INGLES_ESSD0208" },	  
-        "68c35630-1cff-4996-83af-96070703fa0f": { name: "SI24_FRANCES_ESSD0208" },	  
-        "9462e18a-b5e3-4d5d-a827-dd4606a6c0fa": { name: "SI24_CATALAN_ESSD0208" },	  
-        "5ffb7756-a5f8-4d61-879b-72d34bbb15ed": { name: "SI24_ALEMAN_ESSD0208" }
-          };
-              
-     
-      const predicates = Object.keys(queues).map(queueId => (
-      {
-        dimension: "queueId",
-        value: queueId
-      }));
+       
+      // Crear la tabla al cargar la página
+    $(document).ready(function() {
+      updateTable(emailData);
+    });
       
-      const requestData1stAPI = {
-        metrics: [
-          "oInteracting",
-          "oWaiting",
-          "oUserRoutingStatuses",
-          "oUserPresences"
-        ],
-        filter: {
-          type: "and",
-          clauses: [
-            {
-              type: "or",
-              predicates: predicates
-            }
-          ]
-        },
-        truncated: false,
-        detailMetrics: [
-          "oWaiting",
-          "oUserPresences"
-        ]
-      };
-      
-       const requestData2ndAPI = {
-      "order": "asc",
-      "filter": {
-        "type": "and",
-        "clauses": [
-          {
-            "type": "or",
-            "predicates": predicates
-          }
-        ],
-        "predicates": [
-          {
-            "dimension": "mediaType",
-            "value": "voice"
-          }
-        ]
-      },
-      "groupBy": [
-        "queueId"
-      ],
-      "peekAtLast": true,
-      "metrics": [
-        {
-          "metric": "oWaiting",
-          "details": true
-        }
-      ],
-      "subscribe": true
-       };
-    
-      function getParameterByName(name) {
+      const emailData = {
+  "queueId": "e59c9250-28cf-4227-9291-bda590760616",
+  "toAddress": "cris271@gmail.com",
+  "fromAddress": "cgb_outbound@genesysiberiaps.mypurecloud.de",
+  "subject": "Cruceros",
+  "direction": "OUTBOUND",
+  "textBody": "Te mando el presupuesto"
+};
+
+function getParameterByName(name) {
         name = name.replace(/[\\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\#&]" + name + "=([^&#]*)"),
           results = regex.exec(location.hash);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
       }
     
-      function loadData() {
+    
+      function CrearEmail() {
 
         $.ajax({
           url: API_ENDPOINT,
@@ -199,131 +118,26 @@
           beforeSend: function(xhr) {
             xhr.setRequestHeader('Authorization', 'Bearer ' + gToken);
           },
-          data: JSON.stringify(requestData1stAPI),
+          data: JSON.stringify(emailData),
           contentType: 'application/json',
           success: function(data) {
-            getSecondAPIData(data);
+            updateTable(emailData);
           }
         });
 
         
       }
       
-      
-      function getSecondAPIData(data1stAPI){
-       
-        $.ajax({
-          url: API_ENDPOINT2,
-          type: 'POST',
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('Authorization', 'Bearer ' + gToken);
-          },
-          data: JSON.stringify(requestData2ndAPI),
-          contentType: 'application/json',
-          success: function(data2ndAPI) {
-            
-          displayData(data1stAPI,data2ndAPI);
-         }
-        });
-    
-    }
-    
-    
-    function displayData(data1stAPI, data2ndAPI) {
-      
-      
-      const uniqueQueueIds = [...new Set(data1stAPI.results.map(item => item.group.queueId))];
-      // Ordenar uniqueQueueIds según el nombre de la cola
-    uniqueQueueIds.sort((queueId1, queueId2) => {
-    const queueName1 = queues[queueId1] ? queues[queueId1].name : '';
-    const queueName2 = queues[queueId2] ? queues[queueId2].name : '';
-    return queueName1.localeCompare(queueName2);
-});
-
-if (data2ndAPI.results && data2ndAPI.results.some(item => item.group && item.group.queueId !== undefined)) {
-const uniqueQueueIds2 = [...new Set(data2ndAPI.results.map(item => item.group.queueId))];
-      // Ordenar uniqueQueueIds según el nombre de la cola
-    uniqueQueueIds2.sort((queueId1, queueId2) => {
-    const queueName1 = queues[queueId1] ? queues[queueId1].name : '';
-    const queueName2 = queues[queueId2] ? queues[queueId2].name : '';
-    return queueName1.localeCompare(queueName2);
-}
-)
-};
-      const tableHtml = `<table border="1">
-      <tr>
-                        <th>Nombre de la cola</th>
-                        <th>Interactuando</th>
-<th>En espera</th>
-<th>Mas tiempo en espera</th>
-<th>Agentes interactuando</th>
-<th>Ociosos</th>
-<th>Gestión back office</th>
-<th>Gestión Contacto</th>
-<th>Descanso</th>
-<th>Pausa visual</th>
-<th>Otros</th>
-                      </tr>
-                      ${uniqueQueueIds.map(queueId => {
-			                const queueName = queues[queueId] || 'Desconocido'; // Obtiene el nombre de la cola del mapeo
-                      const rowData = data1stAPI.results.filter(item => item.group.queueId === queueId);
-                      const sumInteracting = rowData.reduce((sum, item) => sum + getMetricValue(item.data, "oInteracting"), 0);
-                      //const sumWaiting = rowData.reduce((sum, item) => sum + getMetricValue(item.data, "oWaiting"), 0);
-                      //const maxObservationData = Math.max(...rowData.map(item => getMetricLWTValue(item.data, "observationData")), "");
-                        const rowData2 = data2ndAPI.results.filter(item => item.group.queueId === queueId);
-                        const sumWaiting2 = rowData2.reduce((sum, item) => sum + getWaitingValue(item.data, "oWaiting"), 0);
-                        const activityDate = rowData2.length > 0 ? rowData2[0].entities[0].activityDate : "";
-			const OnQueue = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "e08eaf1b-ee47-4fa9-a231-1200e284798f"), 0);
-      const AgInteracting = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "INTERACTING"), 0);
-      const AgIdle = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "IDLE"), 0);
-      const Backoffice = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "6b3a63b6-5634-4aff-8838-674ffadb23de"), 0);
-      const Contacto = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "09285548-27dc-4693-b348-26ce839850da"), 0);
-      const Descanso = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "46d1ad03-8828-4161-a6b8-dcec7a42d006"), 0);
-      const PV = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "e1e0e671-d01b-4c41-8a5d-b870641b9c0a"), 0);
-      const Otros = rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "3fd96123-badb-4f69-bc03-1b1ccc6d8014"), 0)+rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "6a3af858-942f-489d-9700-5f9bcdcdae9b"), 0)+rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "bbdff279-7ae1-48ea-bade-7831d7234c64"), 0)+rowData.reduce((sum, item) => sum + getMetricStatusValue(item.data, "d2390a99-8546-bad9-8f0a-219548e8aeb0"), 0);
-
-                        return `<tr>
-                                  <td>${queueName.name}</td>
-                                  <td>${sumInteracting}</td>
-                                  <td>${sumWaiting2}</td>
-                                  <td>${formatTime(activityDate)}</td>
-				                          <td>${AgInteracting}</td>
-                                  <td>${AgIdle}</td>
-                                  <td>${Backoffice}</td>
-                                  <td>${Contacto}</td>
-                                  <td>${Descanso}</td>
-                                  <td>${PV}</td>
-                                  <td>${Otros}</td>
-                                </tr>`;
-                        }).join('')}
-                      </table>`;
-
-                  const tablaContainer = document.getElementById('tabla-container');
-      tablaContainer.innerHTML = tableHtml;
-
-                    }
-
-    function getMetricValue(dataItems, metricName) {
-      const metricData = dataItems.find(item => item.metric === metricName);
-      return metricData ? metricData.stats.count : 0;
+// Función para actualizar la tabla con los datos de emailData
+function updateTable(data) {
+      $('#tabla-container').empty(); // Vaciar el contenido de la tabla
+      $.each(data, function(key, value) {
+        $('#tabla-container').append('<tr><td>' + key + '</td><td>' + value + '</td></tr>');
+      });
+      // Agregar botón en la última fila de la tabla
+      $('#tabla-container').append('<tr><td colspan="2"><button onclick="CrearEmail()">Crear email</button></td></tr>');
     }
 
-    function getMetricLWTValue(dataItems, metricName) {
-      const observationDataMetric = dataItems.find(item => item.metric === "oWaiting");
-      console.log(observationDataMetric);
-  if (observationDataMetric && observationDataMetric.observations) {
-    // Obtener el valor máximo de observationData
-    const maxObservationData = Math.min(...observationDataMetric.observations.map(obs => new Date(obs.observationDate)));
-    console.log(maxObservationData);
-    return maxObservationData;
-  }
-  return null;
-}
-
-      function refreshData() {
-        loadData();
-      }
-    
     // Check if there is a hash in the URL
     if (window.location.hash) {
       const token = getParameterByName('access_token');
@@ -339,39 +153,6 @@ const uniqueQueueIds2 = [...new Set(data2ndAPI.results.map(item => item.group.qu
       window.location.replace(`https://login.${ENVIRONMENT}/oauth/authorize?` + jQuery.param(queryStringData));
     }
     
-    
-    
-    
-    function getWaitingValue(dataItems, metricName) {
-  const metricData = dataItems.find(item => item.metric === metricName);
-  return metricData ? metricData.count : 0;
-}
-
-function getMetricStatusValue(dataItems, metricName) {
-  const metricData = dataItems.find(item => item.qualifier === metricName);
-  return metricData ? metricData.stats.count : 0;
-}
-
-    function formatTime(sTimeStamp) {
-        
-      if (!sTimeStamp || sTimeStamp.length === 0){
-        return "";
-      }else{	
-        var dtTimeStamp = new Date(sTimeStamp);
-        now = new Date();
-        var sec_num = (now - dtTimeStamp) / 1000;
-        var days    = Math.floor(sec_num / (3600 * 24));
-        var hours   = Math.floor((sec_num - (days * (3600 * 24)))/3600);
-        var minutes = Math.floor((sec_num - (days * (3600 * 24)) - (hours * 3600)) / 60);
-        var seconds = Math.floor(sec_num - (days * (3600 * 24)) - (hours * 3600) - (minutes * 60));
-    
-        if (hours   < 10) {hours   = "0"+hours;}
-        if (minutes < 10) {minutes = "0"+minutes;}
-        if (seconds < 10) {seconds = "0"+seconds;}
-    
-        return  hours+':'+minutes+':'+seconds;
-      }
-    }
     
     </script>
     </center>
